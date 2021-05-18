@@ -1,0 +1,28 @@
+{
+  "name": "clone-zap-front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "axios": "^0.21.1",
+    "next": "10.2.0",
+    "polished": "^4.1.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-icons": "^4.2.0",
+    "react-imask": "^6.0.7",
+    "styled-components": "^5.3.0",
+    "typescript": "^4.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^15.3.0",
+    "@types/react": "^17.0.5",
+    "@types/styled-components": "^5.1.9",
+    "babel-plugin-styled-components": "^1.12.0"
+  }
+}
