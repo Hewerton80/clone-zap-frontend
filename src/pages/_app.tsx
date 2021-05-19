@@ -1,10 +1,13 @@
+import Providers from '../conexts';
 import { GlobalStyle } from '../styles/global';
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
       <GlobalStyle />
-      <Component {...pageProps} />
+      <Providers>
+        <Component {...pageProps} />
+      </Providers>
     </>
   )
 }
