@@ -3,15 +3,22 @@ import { api } from '../services/api';
 
 export interface IUser {
     id: string;
+    avatar?: string;
     name: string;
     phone: string;
 }
 
-export interface ICredentials {
+export interface ICredentialsSingIn {
+    phone: string;
+    password: string;
+}
+
+export interface ICredentialsSingUp {
     name: string;
     phone: string;
     password: string;
 }
+
 
 
 const useAuth = () => {
@@ -21,14 +28,15 @@ const useAuth = () => {
     const [isLoadResponse, setIsLoadResponse] = useState<boolean>(false);
     const [isLoadPage, setIsLoadPage] = useState<boolean>(true);
     const [loginErr, setLoginErr] = useState<string>('');
+    const [registerErr, setRegisterErr] = useState<string>('');
 
     const isSinged = useMemo<boolean>(() =>
-        (!!user.id && !!user.name && !!user.phone && !!token)
+        !!(user.id && user.name && user.phone && token)
         , [user, token]);
 
     useEffect(() => {
-        const userData = localStorage.getItem('@user');
-        const tokenData = localStorage.getItem('@token');
+        const userData = sessionStorage.getItem('@user');
+        const tokenData = sessionStorage.getItem('@token');
         if (!!userData && !!tokenData) {
             try {
                 const userParsed = JSON.parse(userData) as IUser;
@@ -42,16 +50,16 @@ const useAuth = () => {
         setIsLoadPage(false);
     }, []);
 
-    const singIn = useCallback(async (credentials: ICredentials) => {
+    const singIn = useCallback(async (credentials: ICredentialsSingIn) => {
         setIsLoadResponse(true);
         setLoginErr('');
         try {
-            const response = await api.post('/auth/login', credentials);
+            const response = await api.post('/auth/signIn', credentials);
             const { user: userResponse, token } = response.data;
             setUser(userResponse);
             setToken(token);
-            localStorage.setItem('@token', token);
-            localStorage.setItem('@user', JSON.stringify(userResponse));
+            sessionStorage.setItem('@token', token);
+            sessionStorage.setItem('@user', JSON.stringify(userResponse));
         }
         catch (err) {
             // console.log(Object.getOwnPropertyDescriptors(err));
@@ -64,6 +72,32 @@ const useAuth = () => {
             else {
                 setLoginErr('Falha na conexão com o servidor, por favor, tente novamente mais tarde');
             }
+        }
+        setIsLoadResponse(false);
+    }, []);
+
+    const singUp = useCallback(async (credentials: ICredentialsSingUp) => {
+        setIsLoadResponse(true);
+        setRegisterErr('');
+        try {
+            const response = await api.post('/auth/signUp', credentials);
+            const { user: userResponse, token } = response.data;
+            setUser(userResponse);
+            setToken(token);
+            sessionStorage.setItem('@token', token);
+            sessionStorage.setItem('@user', JSON.stringify(userResponse));
+        }
+        catch (err) {
+            // console.log(Object.getOwnPropertyDescriptors(err));
+            if (err?.response?.status === 409) {
+                setRegisterErr('Já existe um usuário cadastrado com esse número');
+            }
+            else if (err?.response?.status === 500) {
+                setRegisterErr('Falha ao fazer login, por favor, tente novamente mais tarde');
+            }
+            else {
+                setRegisterErr('Falha na conexão com o servidor, por favor, tente novamente mais tarde');
+            }
 
         }
         setIsLoadResponse(false);
@@ -71,7 +105,7 @@ const useAuth = () => {
 
     const singOut = useCallback(async () => {
         setUser({} as IUser);
-        localStorage.clear();
+        sessionStorage.clear();
     }, []);
 
 
@@ -80,8 +114,10 @@ const useAuth = () => {
         isSinged,
         isLoadResponse,
         loginErr,
+        registerErr,
         isLoadPage,
         singIn,
+        singUp,
         singOut,
     };
 }

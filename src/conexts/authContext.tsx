@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { createContext } from "react";
-import useAuth, { ICredentials, IUser } from '../hooks/useAuth';
+import useAuth, { ICredentialsSingIn, ICredentialsSingUp, IUser } from '../hooks/useAuth';
 
 
 interface IAuthContex {
@@ -9,7 +9,9 @@ interface IAuthContex {
     isLoadResponse: boolean;
     isLoadPage: boolean;
     loginErr: string;
-    singIn(credentials: ICredentials): Promise<void>;
+    registerErr: string;
+    singIn(credentials: ICredentialsSingIn): Promise<void>;
+    singUp(credentials: ICredentialsSingUp): Promise<void>;
     singOut: () => Promise<void>;
 }
 
@@ -25,8 +27,10 @@ function AuthContexrProvider({ children }: AuthContexrProviderProps) {
         isSinged,
         isLoadResponse,
         loginErr,
+        registerErr,
         isLoadPage,
         singIn,
+        singUp,
         singOut,
     } = useAuth();
 
@@ -37,8 +41,10 @@ function AuthContexrProvider({ children }: AuthContexrProviderProps) {
                 isSinged,
                 isLoadResponse,
                 loginErr,
+                registerErr,
                 isLoadPage,
                 singIn,
+                singUp,
                 singOut,
             }}
         >

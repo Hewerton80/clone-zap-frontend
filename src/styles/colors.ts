@@ -13,6 +13,7 @@ export const colors =  {
     black: '#000000', //fonts
     black2: '#303030', //fonts msgs
     yellow: '#dcf8c6',// background msg sended for me
-    blue: '#4ebaea'
+    blue: '#4ebaea',
+    red: '#dc3545'
   };
   

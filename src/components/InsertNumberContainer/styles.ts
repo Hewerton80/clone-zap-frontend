@@ -7,11 +7,25 @@ export const Container = styled.div`
     justify-content: center;
     padding: 0 30px;
     & > div {
-        max-width: 380px;
+        max-width: 1000px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    .form-wrapper {
+        max-width: 460px;
         width: 100%;
         display: flex;
         flex-direction: column;
         margin-top: 50px;
+        
+    }
+    form {
+        width: 100%;
+        border: 1px solid ${colors.gree2};
+        border-radius: 18px;
+        overflow: hidden;
     }
     header {
         width: 100%;
@@ -19,27 +33,22 @@ export const Container = styled.div`
         justify-content: center;
         padding: 12px 20px;
         background: ${colors.gree2};
-        border-top-right-radius: 18px;
-        border-top-left-radius: 18px;
     }
     h2 {
         font-size: 24px;
         color: ${colors.primary};
         text-align: center;
     }
-    form {
+    main {
         width: 100%;
         display: flex;
         flex-direction: column;
         padding: 14px;
-        border: 1px solid ${colors.gree2};
-        border-bottom-right-radius: 18px;
-        border-bottom-left-radius: 18px;
     }
     .input-wrapper {
         display: flex;
         align-items: center;
-        margin-bottom: 18px;
+        margin-bottom: 9px;
         width: 100%;
         background: ${colors.primary};
         height: 35px;
@@ -80,18 +89,11 @@ export const Container = styled.div`
             cursor: unset;
         }
     }
-    .arrow {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        padding: 5px;
-        display: flex;
-        justify-content: center;
-        align-items: cneter;
-        background: ${colors.greem};
-        svg {
-            color: ${colors.primary};
-        }
+    .err {
+        font-size: 0.875rem; //14px
+        color: ${colors.red};
+        margin-bottom: 9px;
+        margin-top: 4px;
     }
     .invalid{
         opacity: 0.4;
