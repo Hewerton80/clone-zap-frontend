@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import * as Styled from './styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -14,6 +14,7 @@ import { colors } from '../../../styles/colors';
 import Avatar from '../../Avatar';
 import io from 'socket.io-client';
 import { baseURL } from '../../../services/api';
+import { GroupContext } from '../../../conexts/groupContext';
 
 interface FindContactDialogProps {
   open: boolean;
@@ -21,6 +22,7 @@ interface FindContactDialogProps {
 }
 
 export function FindContactDialog({ open, handleClose }: FindContactDialogProps) {
+  const { addGroup } = useContext(GroupContext);
 
   const { userFound, isLoad, findUser, clearUser } = useUser();
 
@@ -38,12 +40,14 @@ export function FindContactDialog({ open, handleClose }: FindContactDialogProps)
   }, []);
 
   const findContact = useCallback(() => {
+    handleClose()
     setIsLoadFindContact(true);
-    socket.emit('create_privaty_group', userFound.id, (privateGroup: any) => {
+    socket.emit('create_private_group', userFound.id, (privateGroup: any) => {
+      addGroup(privateGroup);
       console.log('privateGroup: ', privateGroup)
       setIsLoadFindContact(false);
     });
-  }, [socket, userFound]);
+  }, [socket, userFound, addGroup, handleClose]);
 
   const isValid = useMemo(() => !!phone.match(Regex.phone), [phone]);
 

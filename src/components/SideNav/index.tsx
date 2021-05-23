@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import * as Styled from './styles';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -9,11 +9,30 @@ import Avatar from '../Avatar';
 import Popover from '@material-ui/core/Popover';
 import IconButton from '@material-ui/core/IconButton';
 import FindContactDialog from '../Dialog/FindContactDialog';
+import io from 'socket.io-client';
+import { baseURL } from '../../services/api';
+import { IGroup } from '../../hooks/useGroups';
+import { GroupContext } from '../../conexts/groupContext';
 
 function SideNav() {
 
+  const { groups, isLoadGroup, setGroup } = useContext(GroupContext);
   const [showDialodFindContact, setShowDialodFindContact] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const socket = useMemo(() => io(baseURL, {
+    query: {
+      token: sessionStorage.getItem('@token')
+    }
+  }), [])
+
+  useEffect((): any => {
+    socket.emit('get_my_groups', 1, (groups: IGroup[]) => {
+      // console.log(groups);
+      setGroup(groups);
+    })
+    return () => socket && socket.disconnect()
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -55,18 +74,23 @@ function SideNav() {
 
         <ul>
           {
-            Array.from(Array(30).keys()).map((v, i) => (
-              <li key={i}>
+            groups.map((gp, i) => (
+              <li key={gp.id + i}>
                 <div className='avatar-group'>
-                  <img src={groupsData[i % 2].umrImg} alt='gp-avatar' />
+                  <img src={gp.imgUrl || '/images/profile.png'} alt='gp-avatar' />
                 </div>
                 <div className='msgs-group'>
-                  <span className='title-group'>{groupsData[i % 2].title}</span>
-                  <span className='last-msg-group'>{groupsData[i % 2].lasMsg}</span>
+                  <span className='title-group'>{gp.name}</span>
+                  <span className='last-msg-group'>{gp.lastMsg}</span>
                 </div>
                 <div className='time-msgs-group'>
-                  <span className='time-msgs'>{groupsData[i % 2].lastMsgtime}</span>
-                  <span className='count-msgs'>{groupsData[i % 2].count}</span>
+                  <span className='time-msgs'>{gp.lastMsgTime}</span>
+                  {gp.countMsgsUnread > 0 ?
+                    <span className='count-msgs'>{gp.countMsgsUnread}</span>
+                    :
+                    ''
+                  }
+
                 </div>
               </li>
             ))
@@ -102,7 +126,7 @@ function SideNav() {
         </FloatingMenuWrapper>
       </Popover>
 
-      <FindContactDialog open={showDialodFindContact} handleClose={() => setShowDialodFindContact(false)}/>
+      <FindContactDialog open={showDialodFindContact} handleClose={() => setShowDialodFindContact(false)} />
     </>
   );
 };

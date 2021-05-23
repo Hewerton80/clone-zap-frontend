@@ -104,6 +104,7 @@ export const Aside = styled.aside`
     }
     .msgs-group {
         height: 100%;
+        padding: 11px 0;
         overflow: hidden;
         display: flex;
         flex-direction: column;

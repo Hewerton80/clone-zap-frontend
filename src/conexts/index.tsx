@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { AuthContexrProvider } from './authContext';
+import { GroupContextProvider } from './groupContext';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -8,7 +9,9 @@ interface ProvidersProps {
 function Providers({ children }: ProvidersProps) {
   return (
     <AuthContexrProvider>
-      {children}
+      <GroupContextProvider>
+        {children}
+      </GroupContextProvider>
     </AuthContexrProvider>
   );
 }

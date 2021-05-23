@@ -22,8 +22,8 @@ function MsgContainer() {
   }, [msg]);
 
   useEffect(() => {
-    console.log('scrollTop:', divMsgsRef.current.scrollTop);
-    console.log('scrollHeight:', divMsgsRef.current.scrollHeight);
+    // console.log('scrollTop:', divMsgsRef.current.scrollTop);
+    // console.log('scrollHeight:', divMsgsRef.current.scrollHeight);
     divMsgsRef.current.scrollTo(0, divMsgsRef.current.scrollHeight);
 
 
