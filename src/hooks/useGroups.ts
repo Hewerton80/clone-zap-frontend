@@ -16,8 +16,9 @@ export interface IGroup {
 const useGroup = () => {
 
     const [isLoadGroup, setIsloadGroup] = useState(false);
-    const [groups, setGroup] = useState<IGroup[]>([]);
-    const [groupFound, setGroupFound] = useState({} as IGroup);
+    const [groups, setGroups] = useState<IGroup[]>([]);
+    const [groupIndexActived, setGroupIndexAtived] = useState<number | undefined>(undefined);
+    const [groupFound, setGroupsFound] = useState({} as IGroup);
 
     const getGroups = useCallback(async (page: string) => {
         setIsloadGroup(true);
@@ -27,7 +28,7 @@ const useGroup = () => {
                     page
                 }
             })
-            response?.data && setGroup(currentGroups => [...currentGroups, ...response?.data]);
+            response?.data && setGroups(currentGroups => [...currentGroups, ...response?.data]);
         }
         catch (err) {
             console.error(err);
@@ -36,7 +37,7 @@ const useGroup = () => {
     }, []);
 
     const addGroup = useCallback((group: IGroup)=> {
-        setGroup(currentGroups => {
+        setGroups(currentGroups => {
             const index = currentGroups.findIndex(gp => gp.id === group.id)
             const tmpCurrentGroups = [...currentGroups];
             if(index !== -1){
@@ -47,11 +48,19 @@ const useGroup = () => {
         });
     },[]);
 
-    const clearGroup = useCallback(()=>{
-        setGroupFound({} as IGroup);
+    const handleSetGroups = useCallback((groups: IGroup[])=>{
+        setGroups(groups);
     },[])
 
-    return { groupFound, isLoadGroup, groups, getGroups, clearGroup, addGroup, setGroup };
+    const handleSetGroupIndexAtived = useCallback((index: number)=>{
+        setGroupIndexAtived(index);
+    },[])
+
+    const clearGroup = useCallback(()=>{
+        setGroupsFound({} as IGroup);
+    },[])
+
+    return { groupFound, isLoadGroup, groups, groupIndexActived, getGroups, clearGroup, addGroup, handleSetGroups, handleSetGroupIndexAtived };
 
 }
 export default useGroup;

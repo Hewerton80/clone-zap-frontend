@@ -84,7 +84,7 @@ export function FindContactDialog({ open, handleClose }: FindContactDialogProps)
             {
               Object.keys(userFound).length > 0 && (
                 <>
-                  <Avatar src={'images/profile.jpg'} />
+                  <Avatar src={userFound.imgUrl ||  'images/profile.png'} />
                   <span>{userFound.name}</span>
                 </>
               )

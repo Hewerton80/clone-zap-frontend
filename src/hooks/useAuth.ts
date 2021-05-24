@@ -1,12 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { api } from '../services/api';
+import { IUser } from './useUser';
 
-export interface IUser {
-    id: string;
-    avatar?: string;
-    name: string;
-    phone: string;
-}
+
 
 export interface ICredentialsSingIn {
     phone: string;

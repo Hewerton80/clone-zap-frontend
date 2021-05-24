@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import * as Styled from './styles';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -13,10 +13,17 @@ import io from 'socket.io-client';
 import { baseURL } from '../../services/api';
 import { IGroup } from '../../hooks/useGroups';
 import { GroupContext } from '../../conexts/groupContext';
+import useAuth from '../../hooks/useAuth';
+import { MessageContext } from '../../conexts/messageContext';
 
 function SideNav() {
 
-  const { groups, isLoadGroup, setGroup } = useContext(GroupContext);
+  const { clearMessages } = useContext(MessageContext);
+
+  const { groups, isLoadGroup, groupIndexActived, handleSetGroups, handleSetGroupIndexAtived } = useContext(GroupContext);
+
+  const { user } = useAuth();
+
   const [showDialodFindContact, setShowDialodFindContact] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -28,11 +35,18 @@ function SideNav() {
 
   useEffect((): any => {
     socket.emit('get_my_groups', 1, (groups: IGroup[]) => {
-      // console.log(groups);
-      setGroup(groups);
+      console.log(groups);
+      handleSetGroups(groups);
     })
     return () => socket && socket.disconnect()
   }, []);
+
+  const handleClickGroup = useCallback((i: number) => {
+    if (i !== groupIndexActived) {
+      clearMessages()
+      handleSetGroupIndexAtived(i)
+    }
+  }, [groupIndexActived, handleSetGroupIndexAtived, clearMessages]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -49,7 +63,7 @@ function SideNav() {
     <>
       <Styled.Aside>
         <header>
-          <Avatar src={'/images/profile.jpg'} />
+          <Avatar src={user.imgUrl || '/images/profile.png'} />
           <div className='actions'>
             <IconButton>
               <MdMessage />
@@ -75,7 +89,11 @@ function SideNav() {
         <ul>
           {
             groups.map((gp, i) => (
-              <li key={gp.id + i}>
+              <li
+                key={gp.id + i}
+                onClick={() => handleClickGroup(i)}
+                className={groupIndexActived === i ? 'active' : ''}
+              >
                 <div className='avatar-group'>
                   <img src={gp.imgUrl || '/images/profile.png'} alt='gp-avatar' />
                 </div>

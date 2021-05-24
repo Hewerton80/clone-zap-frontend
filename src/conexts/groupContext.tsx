@@ -1,13 +1,14 @@
-import { SetStateAction } from "react";
 import { createContext, ReactNode } from "react";
 import useGroup, { IGroup } from "../hooks/useGroups";
 
 interface IGroupContext {
     groups: IGroup[];
     isLoadGroup: boolean;
+    groupIndexActived: number | undefined;
     getGroups: (page: string) => void;
     addGroup: (groups: IGroup) => void;
-    setGroup: (value: SetStateAction<IGroup[]>) => void;
+    handleSetGroups: (groups: IGroup[]) => void;
+    handleSetGroupIndexAtived: (index: number) => void;
 }
 
 const GroupContext = createContext({
@@ -23,9 +24,11 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
     const {
         isLoadGroup,
         groups,
+        groupIndexActived,
         getGroups,
         addGroup,
-        setGroup
+        handleSetGroups,
+        handleSetGroupIndexAtived
     } = useGroup();
 
     return (
@@ -33,9 +36,11 @@ function GroupContextProvider({ children }: GroupContextProviderProps) {
             value={{
                 isLoadGroup,
                 groups,
+                groupIndexActived,
                 getGroups,
                 addGroup,
-                setGroup
+                handleSetGroups,
+                handleSetGroupIndexAtived
             }}
         >
             {children}

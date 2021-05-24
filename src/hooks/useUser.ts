@@ -1,7 +1,13 @@
 import { useCallback, useState } from "react";
 import { api } from "../services/api";
-import { IUser } from "./useAuth";
 
+export interface IUser {
+    id: string;
+    imgUrl?: string;
+    avatar?: string;
+    name: string;
+    phone: string;
+}
 
 const useUser = () => {
 
@@ -25,9 +31,9 @@ const useUser = () => {
         setIsload(false);
     }, []);
 
-    const clearUser = useCallback(()=>{
+    const clearUser = useCallback(() => {
         setUserFound({} as IUser);
-    },[])
+    }, [])
 
     return { userFound, isLoad, findUser, clearUser };
 
