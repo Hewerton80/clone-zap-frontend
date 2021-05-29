@@ -83,7 +83,10 @@ export const Aside = styled.aside`
         padding-left: 13px;
         border-bottom: 0.5px solid ${colors.fifth};
         cursor: pointer;
-        &:hover, &.active {
+        &:hover {
+            background: ${colors.seventh};
+        }
+        &.active {
             background: ${colors.fifth};
         }
     }

@@ -10,6 +10,8 @@
   "dependencies": {
     "@material-ui/core": "^4.11.4",
     "axios": "^0.21.1",
+    "emoji-mart": "^3.0.1",
+    "emoji-picker-react": "^3.4.6",
     "moment": "^2.29.1",
     "next": "10.2.0",
     "polished": "^4.1.2",

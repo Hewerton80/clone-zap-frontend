@@ -1,13 +1,14 @@
 
 import { useCallback, useState } from "react";
 import { api } from "../services/api";
+import { IMessage } from "./useMessage";
 
 export interface IGroup {
     id?: string;
     imgUrl?: string;
     name: string;
     lastMsg: string;
-    lastMsgTime: string;
+    lastMsgTime: Date;
     countMsgsUnread: number;
     is_private: boolean;
     createtAt: string;
@@ -36,31 +37,68 @@ const useGroup = () => {
         setIsloadGroup(false);
     }, []);
 
-    const addGroup = useCallback((group: IGroup)=> {
+    const addGroup = useCallback((group: IGroup) => {
         setGroups(currentGroups => {
             const index = currentGroups.findIndex(gp => gp.id === group.id)
             const tmpCurrentGroups = [...currentGroups];
-            if(index !== -1){
+            if (index !== -1) {
                 tmpCurrentGroups.splice(index, 1);
             }
             tmpCurrentGroups.unshift(group);
             return tmpCurrentGroups;
         });
-    },[]);
+    }, []);
 
-    const handleSetGroups = useCallback((groups: IGroup[])=>{
+    const updateInfoGroupByMessage = useCallback((message: IMessage, incrementCountMsgsUnread?: boolean) => {
+        setGroups(currentGroups => {
+            const index = currentGroups.findIndex(gp => gp.id === message.group_id)
+            const tmpCurrentGroups = [...currentGroups];
+            if (index !== -1) {
+                tmpCurrentGroups[index].lastMsg = message.text;
+                tmpCurrentGroups[index].lastMsgTime = message.created_at;
+                if(incrementCountMsgsUnread){
+                    tmpCurrentGroups[index].countMsgsUnread++;
+                }
+            }
+            return tmpCurrentGroups;
+        });
+    }, []);
+
+    const zereCountMsgsUnreadGroup = useCallback((groupId: string) => {
+        setGroups(currentGroups => {
+            const index = currentGroups.findIndex(gp => gp.id === groupId)
+            const tmpCurrentGroups = [...currentGroups];
+            if (index !== -1) {
+                tmpCurrentGroups[index].countMsgsUnread = 0;
+            }
+            return tmpCurrentGroups;
+        });
+    }, []);
+
+    const handleSetGroups = useCallback((groups: IGroup[]) => {
         setGroups(groups);
-    },[])
+    }, [])
 
-    const handleSetGroupIndexAtived = useCallback((index: number)=>{
+    const handleSetGroupIndexAtived = useCallback((index: number) => {
         setGroupIndexAtived(index);
-    },[])
+    }, [])
 
-    const clearGroup = useCallback(()=>{
+    const clearGroup = useCallback(() => {
         setGroupsFound({} as IGroup);
-    },[])
+    }, [])
 
-    return { groupFound, isLoadGroup, groups, groupIndexActived, getGroups, clearGroup, addGroup, handleSetGroups, handleSetGroupIndexAtived };
-
+    return {
+        groupFound,
+        isLoadGroup,
+        groups,
+        groupIndexActived,
+        getGroups,
+        clearGroup,
+        addGroup,
+        zereCountMsgsUnreadGroup,
+        updateInfoGroupByMessage,
+        handleSetGroups,
+        handleSetGroupIndexAtived
+    };
 }
 export default useGroup;

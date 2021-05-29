@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import * as Styled from './styles';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiOutlineSearch } from 'react-icons/ai';
@@ -9,42 +9,80 @@ import Avatar from '../Avatar';
 import Popover from '@material-ui/core/Popover';
 import IconButton from '@material-ui/core/IconButton';
 import FindContactDialog from '../Dialog/FindContactDialog';
-import io from 'socket.io-client';
-import { baseURL } from '../../services/api';
 import { IGroup } from '../../hooks/useGroups';
 import { GroupContext } from '../../conexts/groupContext';
-import useAuth from '../../hooks/useAuth';
 import { MessageContext } from '../../conexts/messageContext';
+import { IMessage, StatusMsgType } from '../../hooks/useMessage';
+import { isNumber } from '../../utils/isType';
+import { authContex } from '../../conexts/authContext';
+import moment from 'moment';
+import { SocketContext } from '../../conexts/socketContext';
 
 function SideNav() {
 
-  const { clearMessages } = useContext(MessageContext);
+  const { clearMessages, updateStatusMenssageByIds, addMessage } = useContext(MessageContext);
+  const { groups, isLoadGroup, groupIndexActived, handleSetGroups, handleSetGroupIndexAtived, addGroup, updateInfoGroupByMessage } = useContext(GroupContext);
+  const { user } = useContext(authContex);
+  const { socket } = useContext(SocketContext)
 
-  const { groups, isLoadGroup, groupIndexActived, handleSetGroups, handleSetGroupIndexAtived } = useContext(GroupContext);
-
-  const { user } = useAuth();
+  const groupIdRef = useRef<string>('');
 
   const [showDialodFindContact, setShowDialodFindContact] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const socket = useMemo(() => io(baseURL, {
-    query: {
-      token: sessionStorage.getItem('@token')
-    }
-  }), [])
+  // const socket = useMemo(() => io(baseURL, {
+  //   query: {
+  //     token: sessionStorage.getItem('@token')
+  //   }
+  // }), []);
 
   useEffect((): any => {
+
     socket.emit('get_my_groups', 1, (groups: IGroup[]) => {
       console.log(groups);
       handleSetGroups(groups);
-    })
-    return () => socket && socket.disconnect()
+    });
+
+    socket.on("receive_message", (message: IMessage) => {
+      if (message.group_id === groupIdRef.current) {
+        console.log(message);
+        addMessage(message);
+        socket.emit('update_status_message', message, 'readed', (status: StatusMsgType) => {
+          console.log(status);
+          updateStatusMenssageByIds([message.id], status);
+        })
+      }
+      else {
+        updateInfoGroupByMessage(message, true);
+        socket.emit('update_status_message', message, 'received', (status: StatusMsgType) => {
+          console.log(status);
+          updateStatusMenssageByIds([message.id], status);
+        })
+      }
+    });
+
+    socket.on('update_status_messages', ({ ids, status }) => {
+      console.log('update_status_messages: ', ids, status);
+      updateStatusMenssageByIds(ids, status);
+    });
+
+    socket.on('add_to_private_group', (group: IGroup) => {
+      console.log(group);
+      addGroup(group);
+    });
   }, []);
+
+
+  useEffect(() => {
+    if (isNumber(groupIndexActived)) {
+      groupIdRef.current = groups[groupIndexActived].id;
+    }
+  }, [groups, groupIndexActived]);
 
   const handleClickGroup = useCallback((i: number) => {
     if (i !== groupIndexActived) {
-      clearMessages()
-      handleSetGroupIndexAtived(i)
+      clearMessages();
+      handleSetGroupIndexAtived(i);
     }
   }, [groupIndexActived, handleSetGroupIndexAtived, clearMessages]);
 
@@ -102,7 +140,7 @@ function SideNav() {
                   <span className='last-msg-group'>{gp.lastMsg}</span>
                 </div>
                 <div className='time-msgs-group'>
-                  <span className='time-msgs'>{gp.lastMsgTime}</span>
+                  <span className='time-msgs'>{moment(new Date(gp.lastMsgTime)).format('HH:mm')}</span>
                   {gp.countMsgsUnread > 0 ?
                     <span className='count-msgs'>{gp.countMsgsUnread}</span>
                     :

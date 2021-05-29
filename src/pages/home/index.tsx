@@ -1,5 +1,6 @@
 import MsgContainer from '../../components/MsgContainer';
 import SideNav from '../../components/SideNav';
+import { withAuth } from '../../utils/withAuth';
 import * as Styled from './styled';
 
 function Home() {
@@ -11,4 +12,4 @@ function Home() {
   )
 }
 
-export default Home;
+export default withAuth(Home);

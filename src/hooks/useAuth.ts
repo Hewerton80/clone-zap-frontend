@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import  { useCallback, useEffect, useMemo, useState } from 'react';
 import { api } from '../services/api';
 import { IUser } from './useUser';
-
-
+import { useRouter } from 'next/router';
 
 export interface ICredentialsSingIn {
     phone: string;
@@ -15,9 +14,9 @@ export interface ICredentialsSingUp {
     password: string;
 }
 
-
-
 const useAuth = () => {
+
+    const router = useRouter();
 
     const [user, setUser] = useState<IUser>({} as IUser);
     const [token, setToken] = useState<string>('');
@@ -102,8 +101,8 @@ const useAuth = () => {
     const singOut = useCallback(async () => {
         setUser({} as IUser);
         sessionStorage.clear();
+        router.replace('/login');
     }, []);
-
 
     return {
         user,

@@ -63,7 +63,6 @@ export const Container = styled.div`
         overflow-y: auto;
         display: flex;
         flex-direction: column;
-        /* justify-content: flex-end; */
         background: transparent;
         height: calc(100vh - ${dimensions.HeaderHeight + dimensions.FooterHeight}px);
         width:  calc(100vw - ${dimensions.SideNavWidth}px);

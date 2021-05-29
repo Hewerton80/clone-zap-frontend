@@ -15,6 +15,7 @@ import Avatar from '../../Avatar';
 import io from 'socket.io-client';
 import { baseURL } from '../../../services/api';
 import { GroupContext } from '../../../conexts/groupContext';
+import { IGroup } from '../../../hooks/useGroups';
 
 interface FindContactDialogProps {
   open: boolean;
@@ -42,7 +43,7 @@ export function FindContactDialog({ open, handleClose }: FindContactDialogProps)
   const findContact = useCallback(() => {
     handleClose()
     setIsLoadFindContact(true);
-    socket.emit('create_private_group', userFound.id, (privateGroup: any) => {
+    socket.emit('create_private_group', userFound.id, (privateGroup: IGroup) => {
       addGroup(privateGroup);
       console.log('privateGroup: ', privateGroup)
       setIsLoadFindContact(false);

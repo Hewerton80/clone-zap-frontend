@@ -16,35 +16,36 @@ const useMessage = () => {
 
     const [messages, setMessages] = useState<IMessage[]>([]);
 
-    const addMessage = useCallback((message: IMessage)=> {
+    const addMessage = useCallback((message: IMessage) => {
         setMessages(currentMessages => {
             const tmpCurrentMessages = [...currentMessages];
             tmpCurrentMessages.push(message);
             return tmpCurrentMessages;
         });
-    },[]);
+    }, []);
 
-    const updateStatusMenssageById = useCallback((id: string, status: StatusMsgType)=>{
+    const updateStatusMenssageByIds = useCallback((ids: string[], status: StatusMsgType) => {
         setMessages(currentMessages => {
-            const index = currentMessages.findIndex(msg => msg.id === id);
+            // const index = currentMessages.findIndex(msg => msg.id === id);
             const tmpCurrentMessages = [...currentMessages];
-            if(index !== -1){
-                tmpCurrentMessages[index].status = status;
-            }
-            // tmpCurrentMessages.push(message);
+            tmpCurrentMessages.forEach(msg => {
+                if (ids.includes(msg.id)) {
+                    msg.status = status;
+                }
+            })
             return tmpCurrentMessages;
         });
-    },[]);
+    }, []);
 
-    const handleSetMessages = useCallback((messages: IMessage[])=>{
+    const handleSetMessages = useCallback((messages: IMessage[]) => {
         setMessages(messages);
-    },[])
+    }, [])
 
-    const clearMessages = useCallback(()=>{
+    const clearMessages = useCallback(() => {
         setMessages([] as IMessage[]);
-    },[])
+    }, [])
 
-    return { messages, clearMessages, addMessage, handleSetMessages, updateStatusMenssageById };
+    return { messages, clearMessages, addMessage, handleSetMessages, updateStatusMenssageByIds };
 
 }
 export default useMessage;

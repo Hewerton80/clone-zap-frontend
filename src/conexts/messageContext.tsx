@@ -6,7 +6,7 @@ interface IMessageContext {
     clearMessages: () => void;
     addMessage: (message: IMessage) => void;
     handleSetMessages: (messages: IMessage[]) => void;
-    updateStatusMenssageById: (id: string, status: StatusMsgType) => void
+    updateStatusMenssageByIds: (ids: string[], status: StatusMsgType) => void
 }
 
 const MessageContext = createContext({
@@ -19,23 +19,11 @@ interface MessageContextProviderProps {
 
 function MessageContextProvider({ children }: MessageContextProviderProps) {
 
-    const {
-        messages,
-        clearMessages,
-        addMessage,
-        handleSetMessages,
-        updateStatusMenssageById
-    } = useMessage();
+    const messageValues = useMessage();
 
     return (
         <MessageContext.Provider
-            value={{
-                messages,
-                clearMessages,
-                addMessage,
-                handleSetMessages,
-                updateStatusMenssageById
-            }}
+            value={messageValues}
         >
             {children}
         </MessageContext.Provider>

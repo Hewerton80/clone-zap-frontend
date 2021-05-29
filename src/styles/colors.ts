@@ -5,6 +5,7 @@ export const colors =  {
     fourth: '#f6f6f6', //serach top left
     fifth: '#ebebeb', //background group hover
     sixth: '#dadada', //border header
+    seventh: '#f5f5f5', //background group 
     greem: '#06d755', //
     gree2: '#075d55', //
     gree3: '#57a3a0', //
