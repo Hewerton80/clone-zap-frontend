@@ -30,48 +30,44 @@ function SideNav() {
   const [showDialodFindContact, setShowDialodFindContact] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  // const socket = useMemo(() => io(baseURL, {
-  //   query: {
-  //     token: sessionStorage.getItem('@token')
-  //   }
-  // }), []);
-
   useEffect((): any => {
+    if (socket) {
 
-    socket.emit('get_my_groups', 1, (groups: IGroup[]) => {
-      console.log(groups);
-      handleSetGroups(groups);
-    });
+      socket.emit('get_my_groups', 1, (groups: IGroup[]) => {
+        console.log(groups);
+        handleSetGroups(groups);
+      });
 
-    socket.on("receive_message", (message: IMessage) => {
-      if (message.group_id === groupIdRef.current) {
-        console.log(message);
-        addMessage(message);
-        socket.emit('update_status_message', message, 'readed', (status: StatusMsgType) => {
-          console.log(status);
-          updateStatusMenssageByIds([message.id], status);
-        })
-      }
-      else {
-        updateInfoGroupByMessage(message, true);
-        socket.emit('update_status_message', message, 'received', (status: StatusMsgType) => {
-          console.log(status);
-          updateStatusMenssageByIds([message.id], status);
-        })
-      }
-    });
+      socket.on("receive_message", (message: IMessage) => {
+        if (message.group_id === groupIdRef.current) {
+          console.log(message);
+          addMessage(message);
+          socket.emit('update_status_message', message, 'readed', (status: StatusMsgType) => {
+            console.log(status);
+            updateStatusMenssageByIds([message.id], status);
+          })
+        }
+        else {
+          updateInfoGroupByMessage(message, true);
+          socket.emit('update_status_message', message, 'received', (status: StatusMsgType) => {
+            console.log(status);
+            updateStatusMenssageByIds([message.id], status);
+          })
+        }
+      });
 
-    socket.on('update_status_messages', ({ ids, status }) => {
-      console.log('update_status_messages: ', ids, status);
-      updateStatusMenssageByIds(ids, status);
-    });
+      socket.on('update_status_messages', ({ ids, status }) => {
+        console.log('update_status_messages: ', ids, status);
+        updateStatusMenssageByIds(ids, status);
+      });
 
-    socket.on('add_to_private_group', (group: IGroup) => {
-      console.log(group);
-      addGroup(group);
-    });
-  }, []);
+      socket.on('add_to_private_group', (group: IGroup) => {
+        console.log(group);
+        addGroup(group);
+      });
 
+    }
+  }, [socket]);
 
   useEffect(() => {
     if (isNumber(groupIndexActived)) {

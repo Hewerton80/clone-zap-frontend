@@ -16,6 +16,7 @@ import io from 'socket.io-client';
 import { baseURL } from '../../../services/api';
 import { GroupContext } from '../../../conexts/groupContext';
 import { IGroup } from '../../../hooks/useGroups';
+import { SocketContext } from '../../../conexts/socketContext';
 
 interface FindContactDialogProps {
   open: boolean;
@@ -23,22 +24,14 @@ interface FindContactDialogProps {
 }
 
 export function FindContactDialog({ open, handleClose }: FindContactDialogProps) {
+
   const { addGroup } = useContext(GroupContext);
+  const { socket } = useContext(SocketContext);
 
   const { userFound, isLoad, findUser, clearUser } = useUser();
 
   const [phone, setPhone] = useState('');
   const [isLoadFindContact, setIsLoadFindContact] = useState(false);
-
-  const socket = useMemo(() => io(baseURL, {
-    query: {
-      token: sessionStorage.getItem('@token')
-    }
-  }), [])
-
-  useEffect((): any => {
-    return () => socket && socket.disconnect()
-  }, []);
 
   const findContact = useCallback(() => {
     handleClose()

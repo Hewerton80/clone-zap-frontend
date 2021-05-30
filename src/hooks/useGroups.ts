@@ -11,7 +11,8 @@ export interface IGroup {
     lastMsgTime: Date;
     countMsgsUnread: number;
     is_private: boolean;
-    createtAt: string;
+    is_online: boolean;
+    last_access_at: Date;
 }
 
 const useGroup = () => {
