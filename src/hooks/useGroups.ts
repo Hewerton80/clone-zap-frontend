@@ -57,7 +57,7 @@ const useGroup = () => {
             if (index !== -1) {
                 tmpCurrentGroups[index].lastMsg = message.text;
                 tmpCurrentGroups[index].lastMsgTime = message.created_at;
-                if(incrementCountMsgsUnread){
+                if (incrementCountMsgsUnread) {
                     tmpCurrentGroups[index].countMsgsUnread++;
                 }
             }
@@ -71,6 +71,18 @@ const useGroup = () => {
             const tmpCurrentGroups = [...currentGroups];
             if (index !== -1) {
                 tmpCurrentGroups[index].countMsgsUnread = 0;
+            }
+            return tmpCurrentGroups;
+        });
+    }, []);
+
+    const updateStatusGroup = useCallback((groupId: string, { is_online, last_access_at }: { is_online: boolean, last_access_at: Date }) => {
+        setGroups(currentGroups => {
+            const index = currentGroups.findIndex(gp => gp.id === groupId)
+            const tmpCurrentGroups = [...currentGroups];
+            if (index !== -1) {
+                tmpCurrentGroups[index].is_online = is_online;
+                tmpCurrentGroups[index].last_access_at = last_access_at;
             }
             return tmpCurrentGroups;
         });
@@ -97,9 +109,10 @@ const useGroup = () => {
         clearGroup,
         addGroup,
         zereCountMsgsUnreadGroup,
+        updateStatusGroup,
         updateInfoGroupByMessage,
         handleSetGroups,
-        handleSetGroupIndexAtived
+        handleSetGroupIndexAtived,
     };
 }
 export default useGroup;

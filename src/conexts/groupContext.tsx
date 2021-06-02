@@ -8,6 +8,10 @@ interface IGroupContext {
     groupIndexActived: number | undefined;
     getGroups: (page: string) => void;
     zereCountMsgsUnreadGroup: (groupId: string) => void;
+    updateStatusGroup: (groupId: string, { is_online, last_access_at }: {
+        is_online: boolean;
+        last_access_at: Date;
+    }) => void;
     updateInfoGroupByMessage: (message: IMessage, incrementCountMsgsUnread?: boolean) => void;
     addGroup: (groups: IGroup) => void;
     handleSetGroups: (groups: IGroup[]) => void;

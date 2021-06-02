@@ -11,9 +11,11 @@ import { isNumber } from '../../utils/isType';
 import { IMessage } from '../../hooks/useMessage';
 import { v4 } from 'uuid';
 import { authContex } from '../../conexts/authContext';
-import moment from 'moment';
 import { MessageContext } from '../../conexts/messageContext';
 import { SocketContext } from '../../conexts/socketContext';
+import { getHumanizeDate } from '../../utils/getHumanizeDate';
+import moment from 'moment';
+moment.locale('pt-br')
 // import 'emoji-mart/css/emoji-mart.css'
 // import { Picker } from 'emoji-mart'
 
@@ -21,7 +23,7 @@ function MsgContainer() {
 
   const { user } = useContext(authContex);
   const { groups, groupIndexActived, zereCountMsgsUnreadGroup, updateInfoGroupByMessage } = useContext(GroupContext);
-  const { messages, addMessage, updateStatusMenssageByIds, handleSetMessages } = useContext(MessageContext);
+  const { messages, addMessage, updateStatusMenssagesByIds, handleSetMessages } = useContext(MessageContext);
   const { socket } = useContext(SocketContext);
 
   const [page, setPage] = useState(1);
@@ -54,9 +56,9 @@ function MsgContainer() {
     addMessage(message);
     socket.emit('send_message', message, (messageResponse: IMessage) => {
       // console.log(messageResponse);
-      updateStatusMenssageByIds([messageResponse.id], messageResponse.status);
+      updateStatusMenssagesByIds([messageResponse.id], messageResponse.status);
     });
-  }, [msg, socket, user, groups, groupIndexActived, addMessage, updateStatusMenssageByIds]);
+  }, [msg, socket, user, groups, groupIndexActived, addMessage, updateStatusMenssagesByIds]);
 
   useEffect(() => {
     if (isNumber(groupIndexActived)) {
@@ -107,7 +109,14 @@ function MsgContainer() {
               <Avatar src={groups[groupIndexActived]?.imgUrl || 'images/profile.png'} />
               <div className='user-info'>
                 <span className='user-name'>{groups[groupIndexActived].name}</span>
-                <span className='user-status'>visto por último hoje às 19:17</span>
+                <span className='user-status'>
+                  {
+                    groups[groupIndexActived].is_online?
+                      'online'
+                    :
+                    `visto por último em ${moment(groups[groupIndexActived].last_access_at).format('DD, MMM HH:mm')}`
+                  } 
+                </span>
               </div>
             </>
           )

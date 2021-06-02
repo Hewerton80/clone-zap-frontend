@@ -6,7 +6,7 @@ interface IMessageContext {
     clearMessages: () => void;
     addMessage: (message: IMessage) => void;
     handleSetMessages: (messages: IMessage[]) => void;
-    updateStatusMenssageByIds: (ids: string[], status: StatusMsgType) => void
+    updateStatusMenssagesByIds: (ids: string[], status: StatusMsgType) => void
 }
 
 const MessageContext = createContext({

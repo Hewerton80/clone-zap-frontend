@@ -20,10 +20,20 @@ import { SocketContext } from '../../conexts/socketContext';
 
 function SideNav() {
 
-  const { clearMessages, updateStatusMenssageByIds, addMessage } = useContext(MessageContext);
-  const { groups, isLoadGroup, groupIndexActived, handleSetGroups, handleSetGroupIndexAtived, addGroup, updateInfoGroupByMessage } = useContext(GroupContext);
+  const { clearMessages, updateStatusMenssagesByIds, addMessage } = useContext(MessageContext);
+  const { 
+    groups,
+    isLoadGroup,
+    groupIndexActived,
+    handleSetGroups,
+    handleSetGroupIndexAtived,
+    addGroup,
+    updateStatusGroup,
+    updateInfoGroupByMessage
+  } = useContext(GroupContext);
+
   const { user } = useContext(authContex);
-  const { socket } = useContext(SocketContext)
+  const { socket } = useContext(SocketContext);
 
   const groupIdRef = useRef<string>('');
 
@@ -44,26 +54,34 @@ function SideNav() {
           addMessage(message);
           socket.emit('update_status_message', message, 'readed', (status: StatusMsgType) => {
             console.log(status);
-            updateStatusMenssageByIds([message.id], status);
+            updateStatusMenssagesByIds([message.id], status);
           })
         }
         else {
           updateInfoGroupByMessage(message, true);
           socket.emit('update_status_message', message, 'received', (status: StatusMsgType) => {
             console.log(status);
-            updateStatusMenssageByIds([message.id], status);
+            updateStatusMenssagesByIds([message.id], status);
           })
         }
       });
 
       socket.on('update_status_messages', ({ ids, status }) => {
         console.log('update_status_messages: ', ids, status);
-        updateStatusMenssageByIds(ids, status);
+        updateStatusMenssagesByIds(ids, status);
       });
 
       socket.on('add_to_private_group', (group: IGroup) => {
         console.log(group);
         addGroup(group);
+      });
+
+      socket.on('update_user_status', ({ groupsIds, is_online, last_access_at }) => {
+        const index = groupsIds.findIndex((id: string) => id === groupIdRef.current)
+        if(index !== -1) {
+          console.log('update_user_status', { groupsIds, is_online, last_access_at })
+          updateStatusGroup(groupIdRef.current, {is_online, last_access_at});
+        }
       });
 
     }

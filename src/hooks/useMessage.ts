@@ -24,7 +24,7 @@ const useMessage = () => {
         });
     }, []);
 
-    const updateStatusMenssageByIds = useCallback((ids: string[], status: StatusMsgType) => {
+    const updateStatusMenssagesByIds = useCallback((ids: string[], status: StatusMsgType) => {
         setMessages(currentMessages => {
             // const index = currentMessages.findIndex(msg => msg.id === id);
             const tmpCurrentMessages = [...currentMessages];
@@ -45,7 +45,7 @@ const useMessage = () => {
         setMessages([] as IMessage[]);
     }, [])
 
-    return { messages, clearMessages, addMessage, handleSetMessages, updateStatusMenssageByIds };
+    return { messages, clearMessages, addMessage, handleSetMessages, updateStatusMenssagesByIds };
 
 }
 export default useMessage;
