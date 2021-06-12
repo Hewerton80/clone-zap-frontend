@@ -1,7 +1,7 @@
 import { FiClock } from 'react-icons/fi';
 import { BiCheckDouble, BiCheck } from 'react-icons/bi';
-import { IoMdSend } from 'react-icons/io';
-import { colors } from '../../styles/colors';
+import { themes } from '../../styles/colors';
+
 
 export const msgsData = [
     {
@@ -20,6 +20,6 @@ export const msgsData = [
 export const statusIcons = {
     pendend: <FiClock size={11} />,
     sended: <BiCheck size={11} />,
-    received: <BiCheckDouble color={colors.gray2}/>,
-    readed: <BiCheckDouble color={colors.blue}/>,
+    received: <BiCheckDouble color={themes.light.gray2}/>,
+    readed: <BiCheckDouble color={themes.light.blue}/>,
 }

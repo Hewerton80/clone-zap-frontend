@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { rgba } from 'polished';
-import { colors } from '../../styles/colors';
+
 import { dimensions } from '../../styles/dimensions';
 import { LineClamp } from '../LineClamp';
 import { ScrollBarCss } from '../ScrollBar';
@@ -9,15 +9,17 @@ export const Aside = styled.aside`
     width: ${dimensions.SideNavWidth}px;
     display: flex;
     flex-direction: column;
+    background: ${({theme}) => theme.primary};
+    border-right: 1px solid ${({theme}) => theme.sixth};
     svg {
-        color: ${colors.gray2};
+        color: ${({theme}) => theme.gray2};
     }
     header{
         display: flex;
         width: 100%;
         height: ${dimensions.HeaderHeight}px;
         padding: 10px 16px;
-        background: ${colors.secondary};
+        background: ${({theme}) => theme.secondary};
     }
     .actions {
         height: 100%;
@@ -32,18 +34,30 @@ export const Aside = styled.aside`
         }
     }
     .search-bar{
+        position: relative;
         width: 100%;
         height: 50px;
         padding: 0 16px;
         display: flex;
         align-items: center;
-        background: ${colors.fourth};
-        border-bottom: 0.5px solid ${colors.fifth};
+        background: ${({theme}) => theme.fourth};
+        border-bottom: 0.5px solid ${({theme}) => theme.fifth};
+        button{
+            position: absolute;
+            left:0;
+            top:0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: 0;
+            outline: none;
+            cursor: pointer;
+        }
     }
     .input-wrapper {
         position: relative;
         width: 100%;
-        background: ${colors.primary};
+        background: ${({theme}) => theme.bgInput};
         padding: 0 32px 0 65px;
         height: 35px;
         border-radius: 16px;
@@ -60,10 +74,11 @@ export const Aside = styled.aside`
         width: 100%;
         border: none;
         font-size: 0.9375rem; //15px
-        color: ${colors.gray1};
+        color: ${({theme}) => theme.gray1};
+        background: transparent;
         outline: none;
         &::placeholder {
-            color: ${colors.gray2};
+            color: ${({theme}) => theme.gray2};
         }
     }
     ul{
@@ -71,7 +86,6 @@ export const Aside = styled.aside`
         display: flex;
         flex-direction: column;
         max-height: calc(100vh -  ${dimensions.HeaderHeight + 50}px);
-        background: ${colors.primary};
         width: 100%;
         overflow: auto;
     }
@@ -81,13 +95,13 @@ export const Aside = styled.aside`
         width: 100%;
         min-height: 72px;
         padding-left: 13px;
-        border-bottom: 0.5px solid ${colors.fifth};
+        border-bottom: 0.5px solid ${({theme}) => theme.fifth};
         cursor: pointer;
         &:hover {
-            background: ${colors.seventh};
+            background: ${({theme}) => theme.seventh};
         }
         &.active {
-            background: ${colors.fifth};
+            background: ${({theme}) => theme.fifth};
         }
     }
     .avatar-group {
@@ -115,21 +129,21 @@ export const Aside = styled.aside`
     .title-group {
         ${LineClamp(1)};
         font-size: 1.0625rem; //17px
-        color: ${colors.black};
+        color: ${({theme}) => theme.black};
     }
     .last-msg-group {
         ${LineClamp(1)};
         font-size: 0.875rem; //14px
-        color: ${rgba(colors.black, 0.8)};
+        color: ${({theme}) => rgba(theme.black, 0.8)};
     }
-    .time-msgs-group{
+    .time-msgs-group {
         display: flex;
         flex-direction: column;
         margin: 0 15px 0 auto;
     }
     .time-msgs{
         font-size: 0.75rem; //12px
-        color: ${rgba(colors.black, 0.45)};
+        color: ${({theme}) => rgba(theme.black, 0.45)};
         margin-bottom: 3px;
     }
     .count-msgs{
@@ -137,8 +151,8 @@ export const Aside = styled.aside`
         align-items: center;
         justify-content: center;
         font-size: 0.75rem; //12px
-        background: ${colors.greem};
-        color: ${colors.primary};
+        background: ${({theme}) => theme.greem};
+        color: ${({theme}) => theme.primary};
         width: fit-content;
         margin-left: auto;
         padding: 4.8px ;

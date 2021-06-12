@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import { colors } from './colors';
 import { breakpoints } from './dimensions';
 
 export const GlobalStyle = createGlobalStyle`
@@ -51,4 +50,5 @@ export const GlobalStyle = createGlobalStyle`
     ul {
         list-style: none;
     }
+
 `;

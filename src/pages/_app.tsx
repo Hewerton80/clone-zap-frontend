@@ -1,12 +1,13 @@
-import Providers from '../conexts';
-import { GlobalStyle } from '../styles/global';
+import Providers from '../contexts';
+import { GlobalStyle  } from '../styles/global';
 
 function MyApp({ Component, pageProps }) {
+
   return (
     <>
       <GlobalStyle />
       <Providers>
-        <Component {...pageProps} />
+          <Component {...pageProps} />
       </Providers>
     </>
   )

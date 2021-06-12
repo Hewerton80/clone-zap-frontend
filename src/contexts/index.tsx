@@ -3,6 +3,7 @@ import { AuthContexrProvider } from './authContext';
 import { GroupContextProvider } from './groupContext';
 import { MessageContextProvider } from './messageContext';
 import { SocketContextProvider } from './socketContext';
+import { ThemeContextProvider } from './themeContext';
 
 interface ProvidersProps {
   children: ReactNode;
@@ -11,13 +12,15 @@ interface ProvidersProps {
 function Providers({ children }: ProvidersProps) {
   return (
     <AuthContexrProvider>
-      <SocketContextProvider>
-        <GroupContextProvider>
-          <MessageContextProvider>
-            {children}
-          </MessageContextProvider>
-        </GroupContextProvider>
-      </SocketContextProvider>
+      <ThemeContextProvider>
+        <SocketContextProvider>
+          <GroupContextProvider>
+            <MessageContextProvider>
+              {children}
+            </MessageContextProvider>
+          </GroupContextProvider>
+        </SocketContextProvider>
+      </ThemeContextProvider>
     </AuthContexrProvider>
   );
 }

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { colors } from '../../styles/colors';
+import { themes } from '../../styles/colors';
+
 
 export const Container = styled.div`
     display: flex;
@@ -9,9 +10,8 @@ export const Container = styled.div`
     & > div {
         max-width: 1000px;
         width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 30px;
+        display: flex;
+        justify-content: center;
     }
     .form-wrapper {
         max-width: 460px;
@@ -23,7 +23,7 @@ export const Container = styled.div`
     }
     form {
         width: 100%;
-        border: 1px solid ${colors.gree2};
+        border: 1px solid ${themes.light.gree2};
         border-radius: 18px;
         overflow: hidden;
     }
@@ -32,11 +32,11 @@ export const Container = styled.div`
         display: flex;
         justify-content: center;
         padding: 12px 20px;
-        background: ${colors.gree2};
+        background: ${themes.light.gree2};
     }
     h2 {
         font-size: 24px;
-        color: ${colors.primary};
+        color: ${themes.light.primary};
         text-align: center;
     }
     main {
@@ -50,9 +50,9 @@ export const Container = styled.div`
         align-items: center;
         margin-bottom: 9px;
         width: 100%;
-        background: ${colors.primary};
+        background: ${themes.light.primary};
         height: 35px;
-        border-bottom: 1px solid ${colors.gree3};
+        border-bottom: 1px solid ${themes.light.gree3};
     }
     .prefix {
         margin-right: 8px;
@@ -63,10 +63,10 @@ export const Container = styled.div`
         width: 100%;
         border: none;
         font-size: 1.25rem; //20px
-        color: ${colors.black};
+        color: ${themes.light.black};
         outline: none;
         &::placeholder {
-            color: ${colors.gray2};
+            color: ${themes.light.gray2};
         }
     }
     button {
@@ -74,13 +74,14 @@ export const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
-        background: ${colors.greem};
-        color: ${colors.primary};
+        background: ${themes.light.greem};
+        color: ${themes.light.primary};
         height: 38px;
         border-radius: 8px;
         cursor: pointer;
         font-size: 1rem; //16px
         text-transform: uppercase;
+        margin-bottom: 9px;;
         &:hover {
             opacity: .6;
         }
@@ -91,11 +92,19 @@ export const Container = styled.div`
     }
     .err {
         font-size: 0.875rem; //14px
-        color: ${colors.red};
+        color: ${themes.light.red};
         margin-bottom: 9px;
         margin-top: 4px;
     }
     .invalid{
         opacity: 0.4;
+    }
+    p {
+        color: ${themes.light.gree2};
+    }
+    b {
+        font-weight: bold;
+        cursor: pointer;
+        text-transform: uppercase;
     }
 `;

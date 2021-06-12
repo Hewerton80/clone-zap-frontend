@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { rgba } from 'polished';
-import { colors } from '../../styles/colors';
+
 import { dimensions } from '../../styles/dimensions';
 import { ScrollBarCss } from '../ScrollBar';
 
@@ -9,16 +9,15 @@ export const Container = styled.div`
     flex-direction: column;
     width: 100%;
     svg {
-        color: ${colors.gray2};
+        color: ${({theme}) => theme.gray2};
     }
     header {
         display: flex;
         width:  calc(100vw - ${dimensions.SideNavWidth}px);
         height: ${dimensions.HeaderHeight}px;
         padding: 10px 16px;
-        background: ${colors.secondary};
-        border-left: 0.5px solid ${colors.sixth};
-        border-bottom: 1px solid ${rgba(colors.black, 0.08)};
+        background: ${({theme}) => theme.secondary};
+        border-bottom: 1px solid ${({theme}) => rgba(theme.black, 0.08)};
     }
     .user-info {
         margin-left: 15px;
@@ -28,13 +27,13 @@ export const Container = styled.div`
     }
     .user-name {
         font-size: 1rem; //16px
-        color: ${colors.black};
+        color: ${({theme}) => theme.black};
         line-height: 16px;
         margin-bottom: 2px;
     }
     .user-status {
         font-size: 0.8125rem; //13px
-        color: ${rgba(colors.black, 0.6)};
+        color: ${({theme}) => rgba(theme.black, 0.6)};
     }
     main {
         ${ScrollBarCss};
@@ -42,20 +41,27 @@ export const Container = styled.div`
         flex-direction: column;
         height: calc(100vh -  ${dimensions.HeaderHeight}px);
         width:  calc(100vw - ${dimensions.SideNavWidth}px);
-        background-image: url('/images/bg-zap.jpg');
+        background-image: ${({theme}) => `url("/images/bg-${theme.primary.replace('#', '')}.jpg")`};
         background-repeat: repeat;
         width: 100%;
         overflow: auto;
+        position: relative;
+    }
+    .bg{
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
     input {
         height: 100%;
         width: 100%;
         border: none;
         font-size: 0.9375rem; //15px
-        color: ${colors.gray1};
+        background: transparent;
+        color: ${({theme}) => theme.gray1};
         outline: none;
         &::placeholder {
-            color: ${colors.gray2};
+            color: ${({theme}) => theme.gray2};
         }
     }
     .msgs {
@@ -85,16 +91,17 @@ export const Container = styled.div`
         border-radius: 7.5px;
         max-width: 65%;
         padding: 6px 7px 8px 9px;
-        background: ${colors.primary};
-        box-shadow: 0 1px .5px ${rgba(colors.black, 0.13)};
+        background: ${({theme}) => theme.bgMessage};
+        box-shadow: 0 1px .5px ${({theme}) => theme.shadowMessage};
     }
     .my-msg-wrapper {
-        background: ${colors.yellow};
+        background: ${({theme}) => theme.yellow};
+        z-index: 1;
     }
     .msg {
         font-size: 0.875rem; //14px
         line-height: 1.1875rem; //19px 
-        color: ${colors.black2};
+        color: ${({theme}) => theme.black2};
         width: 100%;
         background: transparent;
         margin-right: 30px;
@@ -106,7 +113,7 @@ export const Container = styled.div`
         display: flex;
         align-items: center;
         font-size: 0.6875rem; //11px
-        color: ${rgba(colors.black, 0.45)};
+        color: ${({theme}) => rgba(theme.black, 0.45)};
         bottom: 4px;
         right: 7px;
         & svg {
@@ -115,8 +122,9 @@ export const Container = styled.div`
         }
     }
     footer {
-        background: ${colors.third};
+        background: ${({theme}) => theme.third};
         height: 62px;
+        z-index: 1;
     }
     form {
         height: 100%;
@@ -132,7 +140,7 @@ export const Container = styled.div`
         position: relative;
         width: 100%;
         height: 40px;
-        background: ${colors.primary};
+        background: ${({theme}) => theme.bgInput};//#33383b
         padding: 9px 12px 11px 12px;
         border-radius: 21px;
 

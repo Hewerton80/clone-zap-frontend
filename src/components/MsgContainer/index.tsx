@@ -6,16 +6,16 @@ import { FiPaperclip } from 'react-icons/fi';
 import { IoMdSend } from 'react-icons/io';
 import IconButton from '@material-ui/core/IconButton';
 import { statusIcons } from './data';
-import { GroupContext } from '../../conexts/groupContext';
+import { GroupContext } from '../../contexts/groupContext';
 import { isNumber } from '../../utils/isType';
 import { IMessage } from '../../hooks/useMessage';
 import { v4 } from 'uuid';
-import { authContex } from '../../conexts/authContext';
-import { MessageContext } from '../../conexts/messageContext';
-import { SocketContext } from '../../conexts/socketContext';
-import { getHumanizeDate } from '../../utils/getHumanizeDate';
+import { authContex } from '../../contexts/authContext';
+import { MessageContext } from '../../contexts/messageContext';
+import { SocketContext } from '../../contexts/socketContext';
+import { getHumanizeDateAccess } from '../../utils/getHumanizeDate';
 import moment from 'moment';
-moment.locale('pt-br')
+moment.locale('pt-br');
 // import 'emoji-mart/css/emoji-mart.css'
 // import { Picker } from 'emoji-mart'
 
@@ -111,11 +111,11 @@ function MsgContainer() {
                 <span className='user-name'>{groups[groupIndexActived].name}</span>
                 <span className='user-status'>
                   {
-                    groups[groupIndexActived].is_online?
+                    groups[groupIndexActived].is_online ?
                       'online'
-                    :
-                    `visto por último em ${moment(groups[groupIndexActived].last_access_at).format('DD, MMM HH:mm')}`
-                  } 
+                      :
+                      getHumanizeDateAccess(groups[groupIndexActived].last_access_at)
+                  }
                 </span>
               </div>
             </>
@@ -124,6 +124,7 @@ function MsgContainer() {
       </header>
 
       <main>
+        <div className='bg'></div>
         <div className='msgs' ref={divMsgsRef} onScroll={handleScrollContainerMsg}>
           {
             isNumber(groupIndexActived) && (

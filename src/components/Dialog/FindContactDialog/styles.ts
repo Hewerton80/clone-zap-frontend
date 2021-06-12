@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { colors } from '../../../styles/colors';
 import { LineClamp } from '../../LineClamp';
 
 export const Container = styled.div`
@@ -8,19 +7,20 @@ export const Container = styled.div`
         align-items: center;
         margin-bottom: 18px;
         width: 100%;
-        background: ${colors.primary};
+        background: ${({theme}) => theme.primary};
         height: 35px;
-        border-bottom: 1px solid ${colors.gree3};
+        border-bottom: 1px solid ${({theme}) => theme.gree3};
     }
     input {
         height: 100%;
         width: 100%;
         border: none;
         font-size: 1.25rem; //20px
-        color: ${colors.black};
+        color: ${({theme}) => theme.black};
+        background: transparent;
         outline: none;
         &::placeholder {
-            color: ${colors.gray2};
+            color: ${({theme}) => theme.gray2};
         }
     }
 
@@ -44,8 +44,8 @@ export const ButtonDialog = styled.button`
     justify-content: center;
     border: none;
     padding: 6px 10px;
-    background: ${colors.greem};
-    color: ${colors.primary};
+    background: ${({theme}) => theme.greem};
+    color: ${({theme}) => theme.primary};
     /* height: 38px; */
     border-radius: 8px;
     cursor: pointer;

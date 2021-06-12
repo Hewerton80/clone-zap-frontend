@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import * as Styled from './styles';
-import Dialog from '@material-ui/core/Dialog';
+import { PersolinalizedDialog } from '../styled';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -10,13 +10,12 @@ import { Regex } from '../../../utils/Regex';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import useUser from '../../../hooks/useUser';
-import { colors } from '../../../styles/colors';
+import { themes } from '../../../styles/colors';
 import Avatar from '../../Avatar';
-import io from 'socket.io-client';
-import { baseURL } from '../../../services/api';
-import { GroupContext } from '../../../conexts/groupContext';
+import { GroupContext } from '../../../contexts/groupContext';
 import { IGroup } from '../../../hooks/useGroups';
-import { SocketContext } from '../../../conexts/socketContext';
+import { SocketContext } from '../../../contexts/socketContext';
+import { ThemeContext } from 'styled-components';
 
 interface FindContactDialogProps {
   open: boolean;
@@ -27,6 +26,7 @@ export function FindContactDialog({ open, handleClose }: FindContactDialogProps)
 
   const { addGroup } = useContext(GroupContext);
   const { socket } = useContext(SocketContext);
+  const theme = useContext(ThemeContext);
 
   const { userFound, isLoad, findUser, clearUser } = useUser();
 
@@ -55,7 +55,7 @@ export function FindContactDialog({ open, handleClose }: FindContactDialogProps)
   }, [isValid, phone, findUser, clearUser]);
 
   return (
-    <Dialog
+    <PersolinalizedDialog
       open={open}
       onClose={handleClose}
       aria-labelledby="alert-dialog-title"
@@ -95,7 +95,7 @@ export function FindContactDialog({ open, handleClose }: FindContactDialogProps)
             isLoad ?
               <Loader
                 type="Circles"
-                color={colors.primary}
+                color={themes.light.primary}
                 height={20}
                 width={20}
               />
@@ -104,7 +104,7 @@ export function FindContactDialog({ open, handleClose }: FindContactDialogProps)
           }
         </Styled.ButtonDialog>
       </DialogActions>
-    </Dialog>
+    </PersolinalizedDialog>
   )
 }
 

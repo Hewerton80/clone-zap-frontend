@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { rgba } from 'polished';
-import { colors } from '../../styles/colors';
+
 
 export const Nav = styled.nav`
     display:flex;
@@ -8,7 +8,7 @@ export const Nav = styled.nav`
     padding: 20px 0;
     max-width: 200px;
     width: 100%;
-    background: ${colors.primary};
+    background: ${({theme}) => theme.primary};
     ul {
         display: flex;
         flex-direction: column;
@@ -24,17 +24,17 @@ export const Nav = styled.nav`
         align-items: center;
         padding: 16px;
         font-size: 0.9375rem; //15px
-        color: ${colors.black};
+        color: ${({theme}) => theme.black};
     } 
     li{
         width: 100%; 
         transition: .3s;
         &.divider{
-            border-bottom: 1px solid ${colors.black};
+            border-bottom: 1px solid ${({theme}) => theme.black};
         }
 
         &:hover {
-            background: ${rgba(colors.black, 0.2)};
+            background: ${({theme}) => rgba(theme.black, 0.2)};
         }
     }   
  

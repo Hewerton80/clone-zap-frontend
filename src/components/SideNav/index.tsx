@@ -2,21 +2,22 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'r
 import * as Styled from './styles';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { MdMessage } from 'react-icons/md';
-import { groupsData } from './data';
+// import { MdMessage } from 'react-icons/md';
 import FloatingMenuWrapper from '../FloatingMenuWrapper';
 import Avatar from '../Avatar';
 import Popover from '@material-ui/core/Popover';
 import IconButton from '@material-ui/core/IconButton';
 import FindContactDialog from '../Dialog/FindContactDialog';
 import { IGroup } from '../../hooks/useGroups';
-import { GroupContext } from '../../conexts/groupContext';
-import { MessageContext } from '../../conexts/messageContext';
+import { GroupContext } from '../../contexts/groupContext';
+import { MessageContext } from '../../contexts/messageContext';
 import { IMessage, StatusMsgType } from '../../hooks/useMessage';
 import { isNumber } from '../../utils/isType';
-import { authContex } from '../../conexts/authContext';
+import { authContex } from '../../contexts/authContext';
 import moment from 'moment';
-import { SocketContext } from '../../conexts/socketContext';
+import { SocketContext } from '../../contexts/socketContext';
+import ThemeDialog from '../Dialog/ThemeDialog';
+import { getHumanizeDateMessage } from '../../utils/getHumanizeDate';
 
 function SideNav() {
 
@@ -38,6 +39,7 @@ function SideNav() {
   const groupIdRef = useRef<string>('');
 
   const [showDialodFindContact, setShowDialodFindContact] = useState(false);
+  const [showDialodTheme, setShowDialodTheme] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect((): any => {
@@ -117,9 +119,9 @@ function SideNav() {
         <header>
           <Avatar src={user.imgUrl || '/images/profile.png'} />
           <div className='actions'>
-            <IconButton>
+            {/* <IconButton>
               <MdMessage />
-            </IconButton>
+            </IconButton> */}
             <IconButton onClick={handleClick}>
               <BsThreeDotsVertical />
             </IconButton>
@@ -127,6 +129,7 @@ function SideNav() {
         </header>
 
         <div className='search-bar'>
+       
           <div className='input-wrapper'>
             <AiOutlineSearch />
             <input
@@ -136,6 +139,7 @@ function SideNav() {
               onChange={() => { }}
             />
           </div>
+          <button onClick={() => setShowDialodFindContact(true)} />
         </div>
 
         <ul>
@@ -154,7 +158,7 @@ function SideNav() {
                   <span className='last-msg-group'>{gp.lastMsg}</span>
                 </div>
                 <div className='time-msgs-group'>
-                  <span className='time-msgs'>{moment(new Date(gp.lastMsgTime)).format('HH:mm')}</span>
+                  <span className='time-msgs'>{getHumanizeDateMessage(new Date(gp.lastMsgTime))}</span>
                   {gp.countMsgsUnread > 0 ?
                     <span className='count-msgs'>{gp.countMsgsUnread}</span>
                     :
@@ -189,14 +193,18 @@ function SideNav() {
             <li onClick={() => setShowDialodFindContact(true)}>
               <span className='item'>Procurar contato</span>
             </li>
-            <li>
-              <span className='item'>Criar grupo</span>
+            <li onClick={() => setShowDialodTheme(true)}>
+              <span className='item'>Tema</span>
             </li>
+            {/* <li>
+              <span className='item'>Criar grupo</span>
+            </li> */}
           </ul>
         </FloatingMenuWrapper>
       </Popover>
 
       <FindContactDialog open={showDialodFindContact} handleClose={() => setShowDialodFindContact(false)} />
+      <ThemeDialog open={showDialodTheme} handleClose={() => setShowDialodTheme(false)} />
     </>
   );
 };
