@@ -41,6 +41,7 @@ export const themes = {
     black2: 'rgba(241, 241, 242, 0.95)', //fonts msgs
     yellow: '#056162',// background msg sended for me
     blue: '#4ebaea',
+    red: '#dc3545',
     bgInput: '#323739',
     bgMessage: '#262d31',
     shadowMessage: 'rgba(0, 0, 0, 0)'

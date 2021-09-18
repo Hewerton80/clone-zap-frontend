@@ -16,8 +16,6 @@ import { SocketContext } from '../../contexts/socketContext';
 import { getHumanizeDateAccess } from '../../utils/getHumanizeDate';
 import moment from 'moment';
 moment.locale('pt-br');
-// import 'emoji-mart/css/emoji-mart.css'
-// import { Picker } from 'emoji-mart'
 
 function MsgContainer() {
 

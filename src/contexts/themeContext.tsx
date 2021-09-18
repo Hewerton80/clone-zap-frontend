@@ -1,4 +1,6 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { ThemeProvider } from "styled-components";
+import { themes } from "../styles/colors";
 
 export type ThemeType = 'light' | 'dark'
 
@@ -39,7 +41,9 @@ function ThemeContextProvider({ children }: ThemeContextProviderProps) {
                 changeTheme
             }}
         >
-            {children}
+            <ThemeProvider theme={themes[theme]}>
+                {children}
+            </ThemeProvider>
         </ThemeContext.Provider>
     );
 }

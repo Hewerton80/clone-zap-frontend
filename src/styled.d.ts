@@ -2,6 +2,7 @@ import 'styled-components';
 
 declare module 'styled-components' {
   export interface DefaultTheme {
+    type?: string;
     primary: string, // background group name end inputs
     secondary: string, // background header top left
     third: string, // background send mensseger bar
